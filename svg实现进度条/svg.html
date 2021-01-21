@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="demo.css">
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        .inner-circle {
+            fill: none;
+            stroke-width: 50px;
+            stroke: grey;
+        }
+
+        .outer-circle {
+            fill: none;
+            stroke-width: 50px;
+        }
+
+        .text {
+            font-size: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <svg width="800" height="800" class="svg">
+        <circle cx="400" cy="400" r="300" class="inner-circle"></circle>
+        <circle transform="rotate(-90,400,400)" cx="400" cy="400" r="300" class="outer-circle"
+            stroke-dasharray="0,1000"></circle>
+        <text x="400" y="400" class="text" fill="green">0%</text>
+    </svg>
+    <script>
+
+        class ProgressDom {
+            constructor() {
+                this.dashLength = ""
+                this.lengthTotal = 0
+                this.color = ""
+                this.init()
+            }
+            init() {
+                this.dom = document.querySelector(".outer-circle")
+                this.lengthTotal = this.getLength()
+            }
+            getLength() {
+                // 半径 
+                const r = this.dom.getAttribute("r")
+                // 周长
+                return Math.floor(2 * Math.PI * r)
+            }
+            getProgressLength(percent) {
+                const length = this.lengthTotal / 100 * percent
+                this.dashLength = `${length},10000`
+            }
+            setColor(percent) {
+                const red = 255 - parseInt(255 / 100 * percent)
+                const green = parseInt(191 / 100 * percent)
+                const blue = parseInt(255 / 100 * percent)
+                this.color = `rgb(${red},${green},${blue})`
+            }
+            render(percent) {
+                this.getProgressLength(percent)
+                this.setColor(percent)
+                this.dom.setAttribute("stroke", this.color)
+                this.dom.setAttribute("stroke-dasharray", this.dashLength)
+            }
+        }
+
+        class TextDom {
+            constructor() {
+                this.text = ""
+                this.color = ""
+                this.dom = null
+                this.init()
+            }
+            init() {
+                this.dom = document.querySelector(".text")
+            }
+            setText(percent) {
+                this.text = percent + "%"
+            }
+            setColor(percent) {
+                const red = 255 - parseInt(255 / 100 * percent)
+                const green = parseInt(191 / 100 * percent)
+                const blue = parseInt(255 / 100 * percent)
+                this.color = `rgb(${red},${green},${blue})`
+            }
+            render(percent) {
+                this.setText(percent)
+                this.setColor(percent)
+                this.dom.setAttribute("fill", this.color)
+                this.dom.innerHTML = this.text
+            }
+        }
+
+
+        const progressDom = new ProgressDom()
+        const textDom = new TextDom()
+        function handleProgress(percent) {
+            progressDom.render(percent)
+            textDom.render(percent)
+        }
+
+
+
+
+        // 使用
+        let percent = 0
+
+        setInterval(() => {
+            percent++
+            if (percent > 100) {
+                percent = 0
+            }
+            handleProgress(percent)
+        }, 50);
+
+    </script>
+
+</body>
+
+</html>

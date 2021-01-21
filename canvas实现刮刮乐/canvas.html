@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>刮刮乐</title>
+    <style>
+        .wrapper {
+            position: relative;
+            width: 600px;
+            height: 100px;
+        }
+
+        .result {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            height: 100px;
+            line-height: 100px;
+            text-align: center;
+            font-size: 50px;
+            font-weight: bold;
+            color: red;
+        }
+
+        #canvas {
+            position: absolute;
+            left: 0;
+            top: 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="result">中奖</div>
+        <canvas id="canvas" width="600" height="100"></canvas>
+    </div>
+    <script>
+        const canvas = document.querySelector("#canvas")
+        const resultDom = document.querySelector(".result")
+        const wrapper = document.querySelector(".wrapper")
+        const ctx = canvas.getContext("2d")
+
+        let isDraw = false
+
+        ctx.fillStyle = "grey"
+        ctx.fillRect(0, 0, 600, 300)
+        ctx.globalCompositeOperation = "destination-out"
+
+        wrapper.onmousedown = (e) => {
+            isDraw = true
+        }
+        wrapper.onmouseup = () => {
+            isDraw = false
+        }
+        wrapper.onmousemove = (e) => {
+            const { offsetX: x, offsetY: y } = e
+            if (isDraw) {
+                ctx.arc(x, y, 10, 0, 2 * Math.PI)
+                ctx.fill()
+            }
+
+        }
+        const getRewardLevel = () => {
+            const rewardList = [
+                { level: '一等奖', reward: "小郑一个", percent: 0.5 },
+                { level: '二等奖', reward: "么么哒一个", percent: 0.7 },
+                { level: "三等奖", reward: "拥抱一个", percent: 1 }
+            ]
+
+            const random = Math.random()
+            let reward = ""
+            if (random <= 0.5) {
+                reward = rewardList[0].level + ":" + rewardList[0].reward
+            } else if (random <= 0.7 && random > 0.5) {
+                reward = rewardList[1].level + ":" + rewardList[1].reward
+
+            } else if (random > 0.7) {
+                reward = rewardList[2].level + ":" + rewardList[2].reward
+            }
+            resultDom.innerHTML = reward
+        }
+        getRewardLevel()
+    </script>
+</body>
+
+</html>

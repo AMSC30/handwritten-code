@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Intro to layers | Sample | ArcGIS API for JavaScript 4.17</title>
+
+  <link rel="stylesheet" href="https://js.arcgis.com/4.17/esri/themes/light/main.css" />
+  <script src="https://js.arcgis.com/4.17/"></script>
+
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+
+  <script>
+    require([
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/layers/TileLayer",
+      "esri/layers/WMSLayer"
+    ], function (Map, MapView, TileLayer, WMSLayer) {
+      var housingLayer = new TileLayer({
+        url: "https://gisserver.chengdumap.cn/CDServer/rest/services/SatelliteRS_RS_G2000_2019/MapServer"
+      });
+      // https://gisserver.chengdumap.cn/CDServer/rest/services/SatelliteRS_RS_G2000_2019/MapServer
+      // https://gisserver.chengdumap.cn/CDServer/rest/services/DZDT_Vector_YDB_202005/MapServer
+      // https://gisserver.chengdumap.cn/CDServer/rest/services/DZDT_Vector_HSB_202005/MapServer
+      // var testLayer = new WMSLayer({
+      //         url: "http://127.0.0.1:8089/gis",
+      //         // sublayers: [
+      //         //   {
+      //         //     name: "OSM-WMS"
+      //         //   }
+      //         // ]
+      //       });
+      // "http://36.112.156.48:9995/geoserver/cccc/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&FORMAT=image%2Fjpeg&TRANSPARENT=true&STYLES&TIME=2020-10-01T16%3A00%3A00.000Z&LAYERS=cccc%3Atest_raster_pg&exceptions=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A4326&WIDTH=768&HEIGHT=542&BBOX=102.88970947265625%2C30.02288818359375%2C104.99908447265625%2C31.51153564453125"
+      var map = new Map({
+        basemap: "",
+        layers: [housingLayer]
+      });
+
+      /*****************************************************************
+       * Or they may be added to the map using map.add()
+       *****************************************************************/
+
+      var view = new MapView({
+        container: "viewDiv",
+        map: map
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div id="viewDiv"></div>
+</body>
+
+</html>
