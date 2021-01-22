@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>drag</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            body,
+            html {
+                height: 100%;
+            }
+            body {
+                position: relative;
+            }
+            .drag-box {
+                position: fixed;
+                top: 100px;
+                left: 200px;
+                display: inline-block;
+                width: 200px;
+                height: 200px;
+                background: rgb(8, 164, 236);
+            }
+            .drag-box:hover {
+                cursor: move;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="drag-box"></div>
+        <script>
+            function dragInit(selector) {
+                let dragBox = document.querySelector(selector)
+
+                dragBox.onmousedown = function (e) {
+                    e = e || window.event
+                    x = e.clientX - dragBox.offsetLeft
+                    y = e.clientY - dragBox.offsetTop
+
+                    document.onmousemove = function (e) {
+                        e = e || event
+                        dragBox.style.left = e.clientX - x + 'px'
+                        dragBox.style.top = e.clientY - y + 'px'
+                    }
+
+                    document.onmouseup = function () {
+                        document.onmousemove = document.onmousemove = null
+                    }
+                }
+            }
+
+            window.onload = () => {
+                dragInit('.drag-box')
+            }
+        </script>
+    </body>
+</html>
