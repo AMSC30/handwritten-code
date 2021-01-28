@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+        }
+        .container {
+            overflow: auto;
+            position: relative;
+            margin: 40px;
+            border: 10px solid red;
+            width: 600px;
+            height: 400px;
+            padding: 40px;
+        }
+        .content {
+            width: 800px;
+            height: 600px;
+            border: 10px solid black;
+            padding: 20px;
+            margin-left: 20px;
+        }
+    </style>
+    <body>
+        <div class="container">
+            <div class="content"></div>
+        </div>
+        <div>
+            <p>clientWidth是指元素内容加上padding的宽度或者说是元素减去左右边框的宽度</p>
+            <br />
+            <p>clientHeight是指元素内容加上padding的高度或者说是元素减去上下边框的宽度</p>
+            <br />
+            <p>clientTop是指元素内容上边框的宽度</p>
+            <br />
+            <p>clientLeft是指元素内容左边框的宽度</p>
+            <br />
+            <p>offsetWidth是指元素内容宽度加上左右边框的宽度</p>
+            <br />
+            <p>offsetHeight是指元素内容高度加上上下边框的宽度</p>
+            <br />
+            <p>offsetTop是指元素内容上边框外部到第一个定位的父元素上边框内部的高度</p>
+            <br />
+            <p>offsetLeft是指元素内容左边框外部到第一个定位的父元素左边框内部的高度</p>
+            <br />
+            <p>scrollWidth是指元素的可视区域宽度加上被隐藏的宽度</p>
+            <br />
+            <p>scrollHeight是指元素的可视区域高度加上被隐藏的高度</p>
+            <br />
+            <p>scrollLeft是指内容层顶部到可视区域左部的距离</p>
+            <br />
+            <p>scrollTop是指内容层顶部到可视区域顶部的距离</p>
+        </div>
+        <script>
+            const container = document.querySelector('.container')
+            const content = document.querySelector('.content')
+            container.onscroll = e => {
+                console.log(
+                    container.scrollWidth,
+                    container.scrollHeight,
+                    container.scrollTop,
+                    container.scrollLeft
+                )
+            }
+        </script>
+    </body>
+</html>
