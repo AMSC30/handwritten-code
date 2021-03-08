@@ -52,9 +52,10 @@ function resolvePromise(promise2, x, resolve, reject) {
 
 // 创建promise构造类
 class MyPromise {
-    resolveCallbacks = []
-    rejectCallbacks = []
     constructor(executor) {
+        this.resolveCallbacks = []
+        this.rejectCallbacks = []
+
         // 初始化
         this.status = PENDING
         this.value = undefined
@@ -151,3 +152,4 @@ class MyPromise {
         return promise
     }
 }
+export default MyPromise
