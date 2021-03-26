@@ -1,4 +1,4 @@
-import { getElement } from './a.js'
+import { getElement } from './module.js'
 
 const worker = new Worker('./worker.js')
 
