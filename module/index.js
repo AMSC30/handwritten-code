@@ -1,4 +1,12 @@
-import { a } from './a.js'
-import { b } from './b.js'
+import { getElement } from './a.js'
 
-console.log(a + ' ' + b)
+const worker = new Worker('./worker.js')
+
+const dom = getElement('#file')
+dom.onchange = function () {
+    worker.postMessage(this.files[0])
+}
+worker.onmessage = data => {
+    data = data.data
+    console.log(data)
+}
