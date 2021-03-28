@@ -10,6 +10,7 @@ export default function (Vue) {
                 // router挂载的根实例
                 this._routerRoot = this
                 this._router = this.$options.router
+                this._router.init()
             } else {
                 this._routerRoot = this.$parent && this.$parent._routerRoot
             }
