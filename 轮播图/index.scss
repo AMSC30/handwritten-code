@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html,
+body {
+    height: 100%;
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container {
+    height: 500px;
+    width: 800px;
+    overflow: hidden;
+    & > div {
+        transition: all 0.5s;
+        font-size: 0;
+        width: 4800px;
+        height: 100%;
+    }
+    & img {
+        width: 800px;
+        height: 100%;
+    }
+}

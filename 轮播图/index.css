@@ -1,0 +1,43 @@
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.container {
+  height: 500px;
+  width: 800px;
+  overflow: hidden;
+}
+
+.container > div {
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  font-size: 0;
+  width: 4800px;
+  height: 100%;
+}
+
+.container img {
+  width: 800px;
+  height: 100%;
+}
+/*# sourceMappingURL=index.css.map */
