@@ -60,18 +60,14 @@ const proto = (module.exports = {
 			res._headers = {} // Node < 7.7
 		}
 
-		// then set those specified
 		this.set(err.headers)
 
-		// force text/plain
 		this.type = 'text'
 
 		let statusCode = err.status || err.statusCode
 
-		// ENOENT support
 		if ('ENOENT' === err.code) statusCode = 404
 
-		// default to 500
 		if ('number' !== typeof statusCode || !statuses[statusCode]) statusCode = 500
 
 		// respond

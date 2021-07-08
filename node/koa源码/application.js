@@ -18,24 +18,25 @@ module.exports = class Application extends Emitter {
 	constructor(options) {
 		super()
 		options = options || {}
+
 		this.proxy = options.proxy || false
+
 		this.subdomainOffset = options.subdomainOffset || 2
+
 		this.proxyIpHeader = options.proxyIpHeader || 'X-Forwarded-For'
 		this.maxIpsCount = options.maxIpsCount || 0
+
 		this.env = options.env || process.env.NODE_ENV || 'development'
-		if (options.keys) this.keys = options.keys
+
+		options.keys && (this.keys = options.keys)
+
 		this.middleware = []
 		this.context = Object.create(context)
 		this.request = Object.create(request)
 		this.response = Object.create(response)
-
-		if (util.inspect.custom) {
-			this[util.inspect.custom] = this.inspect
-		}
 	}
 
 	listen(...args) {
-		debug('listen')
 		const server = http.createServer(this.callback())
 		return server.listen(...args)
 	}
@@ -49,8 +50,6 @@ module.exports = class Application extends Emitter {
 	}
 
 	use(fn) {
-		if (typeof fn !== 'function') throw new TypeError('middleware must be a function!')
-
 		this.middleware.push(fn)
 		return this
 	}
