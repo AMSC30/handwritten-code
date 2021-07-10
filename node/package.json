@@ -1,20 +1,21 @@
 {
-  "name": "node-test",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "nodemon index.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "koa": "^2.13.1",
-    "koa-bodyparser": "^4.3.0",
-    "koa-router": "^10.0.0",
-    "koa-static": "^5.0.0",
-    "mysql": "^2.18.1",
-    "nodemon": "^2.0.7"
-  }
+	"name": "node-test",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "nodemon index.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"koa": "^2.13.1",
+		"koa-bodyparser": "^4.3.0",
+		"koa-router": "^10.0.0",
+		"koa-static": "^5.0.0",
+		"mysql": "^2.18.1",
+		"nodemon": "^2.0.7",
+		"puppeteer": "^10.1.0"
+	}
 }
