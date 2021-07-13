@@ -1,14 +1,30 @@
 const EventEmitter = require('events')
-const event = new EventEmitter()
+const emitter = new EventEmitter()
 
-event.on('look', name => {
-	console.log(`${name},look`)
-})
+// 注册事件
+// emitter.on('look', name => {
+// 	console.log(`${name},look`)
+// })
+// emitter.addListener('look', name => {
+// 	console.log(`${name},watch`)
+// })
 
-const timer = setInterval(() => {
-	event.emit('look', 'tom')
-}, 1000)
+// 触发事件
+// emitter.emit('look', 'tom')
 
-setTimeout(() => {
-	clearInterval(timer)
-}, 5000)
+// 查询事件名
+// console.log(emitter.eventNames())
+
+// 查询监听器回调
+// console.log(emitter.listeners('look'))
+
+// 查询监听器回调数量
+// console.log(emitter.listenerCount('look'))
+
+// 取消监听
+// emitter.off('look', fn)
+// emitter.removeListener('look',fn)
+// emitter.removeAllListeners('look')
+
+// console.log(emitter.getMaxListeners())
+// emitter.setMaxListeners(20)
