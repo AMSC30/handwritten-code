@@ -1,2 +1,5 @@
 #! /usr/bin/env node
-require('./lib/core/help')
+const createOptions = require('./lib/core/options')
+const createCommand = require('./lib/core/command.js')
+createOptions()
+createCommand()
