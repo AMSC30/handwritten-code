@@ -13,7 +13,9 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"chalk": "^4.1.1",
 		"commander": "^8.0.0",
-		"download-git-repo": "^3.0.2"
+		"download-git-repo": "^3.0.2",
+		"progress": "^2.0.3"
 	}
 }
