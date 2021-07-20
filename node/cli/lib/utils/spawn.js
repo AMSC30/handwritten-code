@@ -13,6 +13,7 @@ const spawnCommand = (...args) => {
 
 		childProcess.on('error', error => {
 			console.log(error.message)
+			reject(error)
 		})
 	})
 }

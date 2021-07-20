@@ -6,20 +6,20 @@ const { spawnCommand } = require('../utils/spawn')
 
 const create = async name => {
 	try {
-		console.log(chalk.yellow(`creating project named ${name}`))
 		// clone
+		console.log(chalk.yellow(`creating project named ${name}`))
 		await download(config.repoURL, name, { clone: true })
-
 		console.log(chalk.yellow(`created ${name}`))
 
 		const commandName = process.platform === 'win32' ? 'npm.cmd' : 'npm'
+
 		// install
 		await spawnCommand(commandName, ['install'], {
 			cwd: `./${name}`
 		})
 
 		// run
-		await spawnCommand(commandName, ['run', 'dev'], {
+		await spawnCommand(commandName, ['run', 'start'], {
 			cwd: `./{name}`
 		})
 	} catch (error) {
