@@ -1,6 +1,7 @@
 const path = require('path')
 
-const url = '/users/joe/notes.txt'
+// const url = '/users/joe/notes.txt'
+const url = 'C:\\file\\name.txt'
 
 // console.log(path.isAbsolute(url)) // true
 // console.log(path.dirname(url)) // /users/joe
@@ -8,7 +9,10 @@ const url = '/users/joe/notes.txt'
 // console.log(path.basename(url, path.extname(url))) // notes
 // console.log(path.extname(url)) // .txt
 
-// console.log(path.join('name/', '/age', '///path', 'test'))
+// console.log(path.win32.delimiter) // ;
+// console.log(path.posix.delimiter) // :
+
+// console.log(path.join('name/', '/age', 'path', 'test'))
 // name\age\path\test
 
 // console.log(path.resolve('index.js'))
