@@ -1,6 +1,7 @@
 const errorType = require('../constants/error-types')
 const userService = require('../service/user')
-exports.verifyUer = async (ctx, next) => {
+
+exports.verifyUser = async (ctx, next) => {
 	const { account, password } = ctx.request.body
 
 	// 校验必填
@@ -21,9 +22,10 @@ exports.verifyUer = async (ctx, next) => {
 		const error = new Error(errorType.WRONG_PASSWORD.message)
 		return ctx.app.emit('error', error, ctx)
 	}
+
+	await next()
+
 	ctx.body = {
 		message: loginResult[0]
 	}
-
-	await next()
 }

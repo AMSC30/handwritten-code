@@ -12,5 +12,16 @@ class USER {
 		const result = await connection.execute(statement, [account, password])
 		return result[0]
 	}
+
+	async addUser(account, password, name, age) {
+		const statement = `INSERT INTO user (account,password,name,age) VALUES (?,?,?,?)`
+		await connection.execute(statement, [account, password, name, age])
+	}
+
+	async getUserInfo(id) {
+		const statement = `SELECT * FROM user WHERE id = ${id}`
+		const result = await connection.execute(statement, [id])
+		return result[0]
+	}
 }
 module.exports = new USER()
