@@ -1,4 +1,5 @@
 const { addUser, isExist, getUserInfo } = require('../service/user')
+
 exports.login = async (ctx, next) => {
 	await next()
 }
@@ -17,7 +18,7 @@ exports.addUser = async (ctx, next) => {
 	ctx.body = {
 		message: '成功'
 	}
-	next()
+	await next()
 }
 exports.getUserInfo = async (ctx, next) => {
 	const { id } = ctx.request.query
