@@ -29,10 +29,6 @@ exports.verifyUser = async (ctx, next) => {
 	ctx.request.body.password = password
 
 	await next()
-
-	ctx.body = {
-		message: loginResult[0]
-	}
 }
 exports.handlePassword = async (ctx, next) => {
 	const { password } = ctx.request.body
