@@ -39,22 +39,6 @@ exports.addUser = async (ctx, next) => {
 exports.getUserInfo = async (ctx, next) => {
 	const { id } = ctx.request.query
 
-	// const token = ctx.get('token')
-
-	// if (!token) {
-	// 	ctx.status = 401
-	// 	ctx.body = {
-	// 		message: '请先登录'
-	// 	}
-	// } else {
-	// 	const key = fs
-	// 		.readFileSync(path.resolve(__dirname, '../constants', 'public.key'))
-	// 		.toString()
-	// 	const user = jwt.verify(token, key, {
-	// 		algorithms: ['RS256']
-	// 	})
-	// }
-
 	const result = await getUserInfo(id)
 
 	if (result.length) {
