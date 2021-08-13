@@ -1,16 +1,25 @@
-const EventEmitter = require('events')
-const emitter = new EventEmitter()
+const EventEmitter = require('events');
+const emitter = new EventEmitter();
 
 // 注册事件
 // emitter.on('look', name => {
-// 	console.log(`${name},look`)
-// })
+// 	console.log(`${name},look`);
+// });
+
 // emitter.addListener('look', name => {
-// 	console.log(`${name},watch`)
-// })
+// 	console.log(`${name},watch`);
+// });
 
 // 触发事件
 // emitter.emit('look', 'tom')
+
+// 监听注册/注销事件
+// emitter.on('newListener', name => {
+// 	console.log(name);
+// });
+// emitter.on('removeListener', name => {
+// 	console.log(name);
+// });
 
 // 查询事件名
 // console.log(emitter.eventNames())
