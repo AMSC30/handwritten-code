@@ -1,16 +1,16 @@
 const http = require('http')
-http.get('http://www.baidu.com', res => {
-	console.log(res.headers)
+// http.get('http://www.baidu.com', res => {
+// 	console.log(res.headers)
+// })
+const server = http.createServer((req, res) => {
+	console.log(req.headers)
+	res.setHeader('set-cookie', 'name=zhengxixuan')
+	res.end('hello node.js')
 })
-// const server = http.createServer((req, res) => {
-// 	console.log(req.headers)
-// 	res.setHeader('set-cookie', 'name=zhengxixuan')
-// 	res.end('hello node.js')
-// })
-
-// server.listen(3000, () => {
-// 	console.log('server is listening in port 3000')
-// })
+console.log(process.pid)
+server.listen(3000, () => {
+	console.log('server is listening in port 3000')
+})
 
 // 类
 // http.Agent -> http.Server
