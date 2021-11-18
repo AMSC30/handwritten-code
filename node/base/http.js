@@ -1,8 +1,12 @@
 const http = require('http')
-
-const server = http.createServer((req, res) => {
-	res.end('hello node.js')
+http.get('http://www.baidu.com', res => {
+	console.log(res.headers)
 })
+// const server = http.createServer((req, res) => {
+// 	console.log(req.headers)
+// 	res.setHeader('set-cookie', 'name=zhengxixuan')
+// 	res.end('hello node.js')
+// })
 
 // server.listen(3000, () => {
 // 	console.log('server is listening in port 3000')
@@ -18,4 +22,4 @@ const server = http.createServer((req, res) => {
 
 // 属性
 // http.METHODS -> http.STATUS_CODES -> http.maxHeaderSize
-console.log(http)
+// console.log(http)

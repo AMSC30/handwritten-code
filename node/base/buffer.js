@@ -1,7 +1,7 @@
-const { Buffer } = require('buffer');
+const { Buffer } = require('buffer')
 
 // alloc
-// const buffer = Buffer.alloc(20);
+// const buffer = Buffer.alloc(20)
 // const buffer = Buffer.alloc(10, '你好', 'utf8');
 // console.log(buffer);
 // console.log(buffer.toString());
