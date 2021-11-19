@@ -8,7 +8,7 @@ const myConsole = new Console({ stdout: write, stderr: write })
 // myConsole.error('hello')
 
 // log
-// console.log('hello');
+console.log('hello')
 
 // clear
 // console.clear();

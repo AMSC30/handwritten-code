@@ -1,14 +1,14 @@
 const { spawn } = require('child_process')
-const bat = spawn('node', ['process.js'])
+const ls = spawn('ls', ['-lh', '/usr'])
 
-bat.stdout.on('data', data => {
-	console.log(data.toString())
+ls.stdout.on('data', data => {
+	console.log(`stdout: ${data}`)
 })
 
-bat.stderr.on('data', data => {
-	console.error(data.toString())
+ls.stderr.on('data', data => {
+	console.error(`stderr: ${data}`)
 })
 
-bat.on('exit', code => {
-	console.log(`Child exited with code ${code}`)
+ls.on('close', code => {
+	console.log(`child process exited with code ${code}`)
 })
