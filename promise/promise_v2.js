@@ -6,6 +6,26 @@ function noop() {}
 
 var LAST_ERROR = null
 var IS_ERROR = {}
+
+function Promise(fn) {
+    if (typeof this !== 'object') {
+        throw new TypeError('Promises must be constructed via new')
+    }
+
+    if (typeof fn !== 'function') {
+        throw new TypeError("Promise constructor's argument is not a function")
+    }
+
+    this._deferredState = 0
+    this._state = 0
+    this._value = null
+    this._deferreds = null
+    if (fn === noop) return
+    doResolve(fn, this)
+}
+Promise._onHandle = null
+Promise._onReject = null
+Promise._noop = noop
 function getThen(obj) {
     try {
         return obj.then
@@ -31,28 +51,6 @@ function tryCallTwo(fn, a, b) {
         return IS_ERROR
     }
 }
-
-module.exports = Promise
-
-function Promise(fn) {
-    if (typeof this !== 'object') {
-        throw new TypeError('Promises must be constructed via new')
-    }
-
-    if (typeof fn !== 'function') {
-        throw new TypeError("Promise constructor's argument is not a function")
-    }
-
-    this._deferredState = 0
-    this._state = 0
-    this._value = null
-    this._deferreds = null
-    if (fn === noop) return
-    doResolve(fn, this)
-}
-Promise._onHandle = null
-Promise._onReject = null
-Promise._noop = noop
 
 Promise.prototype.then = function (onFulfilled, onRejected) {
     if (this.constructor !== Promise) {
@@ -184,3 +182,5 @@ function doResolve(fn, promise) {
         reject(promise, LAST_ERROR)
     }
 }
+
+window.myPromise = Promise
