@@ -32,8 +32,6 @@ function tryCallTwo(fn, a, b) {
     }
 }
 
-module.exports = Promise
-
 function Promise(fn) {
     if (typeof this !== 'object') {
         throw new TypeError('Promises must be constructed via new')
@@ -43,9 +41,9 @@ function Promise(fn) {
         throw new TypeError("Promise constructor's argument is not a function")
     }
 
-    this._deferredState = 0
     this._state = 0
     this._value = null
+    this._deferredState = 0
     this._deferreds = null
     if (fn === noop) return
     doResolve(fn, this)
@@ -164,6 +162,7 @@ function Handler(onFulfilled, onRejected, promise) {
     this.promise = promise
 }
 
+// doResolved的本质是执行fn并设置promise的状态
 function doResolve(fn, promise) {
     var done = false
     var res = tryCallTwo(
@@ -184,3 +183,4 @@ function doResolve(fn, promise) {
         reject(promise, LAST_ERROR)
     }
 }
+window.myPromise = Promise

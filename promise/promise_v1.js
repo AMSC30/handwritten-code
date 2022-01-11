@@ -7,12 +7,11 @@ function Promise(executor) {
     self.status = PENDING
     self.onFulfilled = [] //成功的回调
     self.onRejected = [] //失败的回调
-    //PromiseA+ 2.1
     function resolve(value) {
         if (self.status === PENDING) {
             self.status = FULFILLED
             self.value = value
-            self.onFulfilled.forEach(fn => fn()) //PromiseA+ 2.2.6.1
+            self.onFulfilled.forEach(fn => fn())
         }
     }
 
@@ -20,7 +19,7 @@ function Promise(executor) {
         if (self.status === PENDING) {
             self.status = REJECTED
             self.reason = reason
-            self.onRejected.forEach(fn => fn()) //PromiseA+ 2.2.6.2
+            self.onRejected.forEach(fn => fn())
         }
     }
 
@@ -32,7 +31,6 @@ function Promise(executor) {
 }
 
 Promise.prototype.then = function (onFulfilled, onRejected) {
-    //PromiseA+ 2.2.1 / PromiseA+ 2.2.5 / PromiseA+ 2.2.7.3 / PromiseA+ 2.2.7.4
     onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : value => value
     onRejected =
         typeof onRejected === 'function'
