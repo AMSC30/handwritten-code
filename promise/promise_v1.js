@@ -38,24 +38,19 @@ Promise.prototype.then = function (onFulfilled, onRejected) {
             : reason => {
                   throw reason
               }
+
     let self = this
-    //PromiseA+ 2.2.7
     let promise2 = new Promise((resolve, reject) => {
         if (self.status === FULFILLED) {
-            //PromiseA+ 2.2.2
-            //PromiseA+ 2.2.4 --- setTimeout
             setTimeout(() => {
                 try {
-                    //PromiseA+ 2.2.7.1
                     let x = onFulfilled(self.value)
                     resolvePromise(promise2, x, resolve, reject)
                 } catch (e) {
-                    //PromiseA+ 2.2.7.2
                     reject(e)
                 }
             })
         } else if (self.status === REJECTED) {
-            //PromiseA+ 2.2.3
             setTimeout(() => {
                 try {
                     let x = onRejected(self.reason)
@@ -92,16 +87,14 @@ Promise.prototype.then = function (onFulfilled, onRejected) {
 
 function resolvePromise(promise2, x, resolve, reject) {
     let self = this
-    //PromiseA+ 2.3.1
     if (promise2 === x) {
         reject(new TypeError('Chaining cycle'))
     }
     if ((x && typeof x === 'object') || typeof x === 'function') {
-        let used //PromiseA+2.3.3.3.3 只能调用一次
+        let used
         try {
             let then = x.then
             if (typeof then === 'function') {
-                //PromiseA+2.3.3
                 then.call(
                     x,
                     y => {
@@ -118,19 +111,16 @@ function resolvePromise(promise2, x, resolve, reject) {
                     }
                 )
             } else {
-                //PromiseA+2.3.3.4
                 if (used) return
                 used = true
                 resolve(x)
             }
         } catch (e) {
-            //PromiseA+ 2.3.3.2
             if (used) return
             used = true
             reject(e)
         }
     } else {
-        //PromiseA+ 2.3.3.4
         resolve(x)
     }
 }

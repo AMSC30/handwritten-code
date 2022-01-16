@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>手写promise</title>
+    </head>
 
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>手写promise</title>
-</head>
-
-<body>
-	<script src="./promise.js"></script>
-	<script></script>
-</body>
-
+    <body>
+        <script src="./promise_v3.js"></script>
+        <script>
+            new MyPromise((resolve, reject) => {
+                setTimeout(() => {
+                    console.log(1)
+                    resolve(2)
+                }, 1000)
+            })
+                .then(val => {
+                    console.log(val)
+                    return 3
+                })
+                .then(val => {
+                    console.log(val)
+                })
+        </script>
+    </body>
 </html>
