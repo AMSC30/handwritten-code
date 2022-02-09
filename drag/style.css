@@ -1,0 +1,22 @@
+.container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.left,
+.right {
+    width: 200px;
+    height: 200px;
+}
+.left {
+    background-color: antiquewhite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.right {
+    background-color: beige;
+}
+.target {
+    cursor: pointer;
+}
