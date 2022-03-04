@@ -12,7 +12,7 @@ export class Store {
 
         this.modules = new ModuleCollection(options)
 
-        const rootState = this.modules.root
+        const rootState = this.modules.root.state
 
         installModule(this, rootState, [], this.modules.root)
 
