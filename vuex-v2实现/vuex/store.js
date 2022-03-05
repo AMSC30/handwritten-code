@@ -63,6 +63,7 @@ function installModule(store, rootState, path, module) {
         const newSpace = nameSpace + key
         registerGetter(store, newSpace, getter, local)
     })
+
     // 递归安装
     module.childForeach((module, key) => {
         installModule(store, rootState, path.concat(key), module)
@@ -99,7 +100,7 @@ function registerAction(store, type, handler, local) {
     })
 }
 function registerGetter(store, type, handler, local) {
-    store.wrappedGetters[type] = () => {
+    store.wrappedGetters[type] = store => {
         return handler.call(store, {
             state: local.state,
             getters: local.getters,
@@ -115,7 +116,9 @@ function resetStoreVm(store) {
     store.getters = {}
 
     Object.keys(wrappedGetters).forEach(key => {
-        computed[key] = wrappedGetters[key]
+        computed[key] = () => {
+            wrappedGetters[key](store)
+        }
         Object.defineProperty(store.getters, key, {
             get: () => store.vm[key],
             enumerable: true
@@ -149,13 +152,12 @@ function makeLocal(store, nameSpace, path) {
     }
     Object.defineProperties(local, {
         state: {
-            get: noNameSpace ? () => store.state : () => getNestedState(store.state, path)
+            get: () => getNestedState(store.state, path)
         },
         getters: {
             get: noNameSpace ? () => store.getters : () => makeModuleGetter(store, nameSpace)
         }
     })
-    // console.log(local)
     return local
 }
 function makeModuleGetter(store, nameSpace) {
