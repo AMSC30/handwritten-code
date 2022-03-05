@@ -12,8 +12,8 @@ export default class ModuleCollection {
     getNameSpace(path) {
         let module = this.root
         return path.reduce((path, key) => {
-            module = module.getChild(path)
-            return path + (module && module.rawModule.nameSpaced ? key + '/' : '')
+            module = module.getChild(key)
+            return path + (module && module.nameSpaced ? key + '/' : '')
         }, '')
     }
     registerModule(path, rawModule) {

@@ -6,9 +6,7 @@ export class Store {
         this.getters = Object.create(null)
 
         this.wrappedGetters = Object.create(null)
-
-        this.subscribes = Object.create(null)
-        this.subscribeActions = Object.create(null)
+        this.cacheGetters = Object.create(null)
 
         this.modules = new ModuleCollection(options)
 
@@ -18,10 +16,23 @@ export class Store {
 
         resetStoreVm(this)
     }
-    commit() {}
-    dispatch() {}
-    subscribe() {}
-    subscribeAction() {}
+    get state() {
+        return this.vm.$$state
+    }
+    commit(type, payload) {
+        const mutations = this.mutations[type]
+        mutations.forEach(fn => {
+            fn(payload)
+        })
+    }
+    dispatch(type, payload) {
+        const actions = this.actions[type]
+        return Promise.all(
+            actions.map(fn => {
+                return fn(payload)
+            })
+        )
+    }
 }
 function installModule(store, rootState, path, module) {
     const isRoot = !path.length
@@ -48,7 +59,7 @@ function installModule(store, rootState, path, module) {
         registerAction(store, newSpace, action, local)
     })
     // 处理getter
-    module.actionGetters((getter, key) => {
+    module.getterForeach((getter, key) => {
         const newSpace = nameSpace + key
         registerGetter(store, newSpace, getter, local)
     })
@@ -63,9 +74,106 @@ function getNestedState(state, path) {
         return state[key]
     }, state)
 }
-function registerMutation() {}
-function registerAction() {}
-function registerGetter() {}
-function resetStoreVm() {}
+function registerMutation(store, type, handler, local) {
+    const entry = store.mutations[type] || (store.mutations[type] = [])
+    entry.push(payload => {
+        handler.call(store, local.state, payload)
+    })
+}
+function registerAction(store, type, handler, local) {
+    const entry = store.actions[type] || (store.actions[type] = [])
 
-function makeLocal() {}
+    entry.push(payload => {
+        return handler.call(
+            store,
+            {
+                state: local.state,
+                getter: local.getters,
+                dispatch: local.dispatch,
+                commit: local.commit,
+                rootState: store.state,
+                rootGetter: store.getters
+            },
+            payload
+        )
+    })
+}
+function registerGetter(store, type, handler, local) {
+    store.wrappedGetters[type] = () => {
+        return handler.call(store, {
+            state: local.state,
+            getters: local.getters,
+            rootState: store.state,
+            rootGetters: store.getters
+        })
+    }
+}
+function resetStoreVm(store) {
+    const oldVm = store.vm
+    const wrappedGetters = store.wrappedGetters
+    const computed = {}
+    store.getters = {}
+
+    Object.keys(wrappedGetters).forEach(key => {
+        computed[key] = wrappedGetters[key]
+        Object.defineProperty(store.getters, key, {
+            get: () => store.vm[key],
+            enumerable: true
+        })
+    })
+    store.vm = new Vue({
+        data: {
+            $$state: store.modules.root.state
+        },
+        computed
+    })
+    oldVm && oldVm.$destroy()
+}
+
+function makeLocal(store, nameSpace, path) {
+    const noNameSpace = nameSpace === ''
+
+    const local = {
+        commit: noNameSpace
+            ? store.commit.bind(store)
+            : (type, payload) => {
+                  const mutationName = nameSpace + type
+                  store.mutation(mutationName, payload)
+              },
+        dispatch: noNameSpace
+            ? store.dispatch.bind(store)
+            : (type, payload) => {
+                  const actionName = nameSpace + type
+                  return store.dispatch(actionName, payload)
+              }
+    }
+    Object.defineProperties(local, {
+        state: {
+            get: noNameSpace ? () => store.state : () => getNestedState(store.state, path)
+        },
+        getters: {
+            get: noNameSpace ? () => store.getters : () => makeModuleGetter(store, nameSpace)
+        }
+    })
+    // console.log(local)
+    return local
+}
+function makeModuleGetter(store, nameSpace) {
+    const position = nameSpace.length
+    const gettersProxy = {}
+
+    Object.keys(store.getters).forEach(key => {
+        if (!key.slice(0, position) === nameSpace) return
+
+        const localType = key.slice(position)
+
+        Object.defineProperty(gettersProxy, localType, {
+            get: () => store.getters[type],
+            enumerable: true
+        })
+    })
+
+    store.cacheGetters[nameSpace] = gettersProxy
+
+    return store.cacheGetters[nameSpace]
+}

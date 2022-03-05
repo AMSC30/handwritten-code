@@ -27,8 +27,8 @@ export class Module {
     actionForeach(fn) {
         this.rawModule.actions && objForeach(this.rawModule.actions, fn)
     }
-    actionGetters(fn) {
-        this.rawModule.getter && objForeach(this.rawModule.getters, fn)
+    getterForeach(fn) {
+        this.rawModule.getters && objForeach(this.rawModule.getters, fn)
     }
 }
 function objForeach(obj, fn) {

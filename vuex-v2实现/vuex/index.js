@@ -43,3 +43,4 @@ const store = new Store({
     }
 })
 console.log(store)
+// store.commit('rootMutation', 2)
