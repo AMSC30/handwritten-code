@@ -52,29 +52,6 @@ function tryCallTwo(fn, a, b) {
     }
 }
 
-<<<<<<< HEAD
-function Promise(fn) {
-    if (typeof this !== 'object') {
-        throw new TypeError('Promises must be constructed via new')
-    }
-
-    if (typeof fn !== 'function') {
-        throw new TypeError("Promise constructor's argument is not a function")
-    }
-
-    this._state = 0
-    this._value = null
-    this._deferredState = 0
-    this._deferreds = null
-    if (fn === noop) return
-    doResolve(fn, this)
-}
-Promise._onHandle = null
-Promise._onReject = null
-Promise._noop = noop
-
-=======
->>>>>>> 83f4a23c7eebb0dfc866a22a603e2034dc694c4e
 Promise.prototype.then = function (onFulfilled, onRejected) {
     if (this.constructor !== Promise) {
         return safeThen(this, onFulfilled, onRejected)

@@ -1,11 +1,9 @@
-const promiseState = {
-    pending: 0,
-    fulfilled: 1,
-    rejected: 2
-}
-
 class MyPromise {
-    state = promiseState.pending
+    static pending = 0
+    static fulfilled = 1
+    static rejected = 2
+
+    state = MyPromise.pending
     value = null
     fulfilledCallbacks = []
     rejectedCallbacks = []
@@ -51,13 +49,13 @@ class MyPromise {
                     reject(error)
                 }
             }
-            if (this.state === promiseState.fulfilled) {
+            if (this.state === MyPromise.fulfilled) {
                 setTimeout(resolveHandler, 0)
             }
-            if (this.state === promiseState.rejected) {
+            if (this.state === MyPromise.rejected) {
                 setTimeout(rejectHandler, 0)
             }
-            if (this.state === promiseState.pending) {
+            if (this.state === MyPromise.pending) {
                 this.fulfilledCallbacks.push(() => {
                     setTimeout(resolveHandler, 0)
                 })
@@ -122,8 +120,8 @@ class MyPromise {
         }
     }
     resolve(value) {
-        if (this.state === promiseState.pending) {
-            this.state = promiseState.fulfilled
+        if (this.state === MyPromise.pending) {
+            this.state = MyPromise.fulfilled
             this.value = value
             if (this.fulfilledCallbacks.length) {
                 this.fulfilledCallbacks.forEach(fn => {
@@ -133,11 +131,11 @@ class MyPromise {
         }
     }
     reject(reason) {
-        if (this.state === promiseState.pending) {
+        if (this.state === MyPromise.pending) {
             if (!reason instanceof Error) {
                 reason = new TypeError('reject reason need typeof error')
             }
-            this.state = promiseState.rejected
+            this.state = MyPromise.rejected
             this.value = reason
             if (this.rejectedCallbacks.length) {
                 this.rejectedCallbacks.forEach(fn => fn(this.reason))
@@ -145,4 +143,13 @@ class MyPromise {
         }
     }
 }
-window.MyPromise = MyPromise
+MyPromise.deferred = function () {
+    let result = {}
+    result.promise = new MyPromise((resolve, reject) => {
+        result.resolve = resolve
+        result.reject = reject
+    })
+    return result
+}
+
+module.exports = MyPromise
