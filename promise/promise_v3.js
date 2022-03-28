@@ -68,16 +68,11 @@ class MyPromise {
         return p1
     }
     resolvePromise(promise, value, resolve, reject) {
-        // 1.如果不返回值，默认为undefined
-        if (value === undefined) {
-            return resolve(undefined)
-        }
-
-        // 2.如果返回了相同的promise
+        // 1.如果返回了相同的promise
         if (promise === value) {
             return reject(new Error('The promise and the return value are the same'))
         }
-        // 3.如果返回的是promise
+        // 2.如果返回的是promise
         if (value instanceof MyPromise) {
             return value.then(
                 val => {
@@ -89,7 +84,7 @@ class MyPromise {
             )
         }
 
-        // 如果返回的是对象，根据是否具有then方法做不同的处理
+        // 3. 如果返回的是对象，根据是否具有then方法做不同的处理
         if (typeof value === 'object' || typeof value === 'function') {
             if (value === null) return resolve(value)
 
