@@ -23,6 +23,29 @@ class MyPromise {
             this.reject(e)
         }
     }
+    resolve(value) {
+        if (this.state === MyPromise.pending) {
+            this.state = MyPromise.fulfilled
+            this.value = value
+            if (this.fulfilledCallbacks.length) {
+                this.fulfilledCallbacks.forEach(fn => {
+                    fn(this.value)
+                })
+            }
+        }
+    }
+    reject(reason) {
+        if (this.state === MyPromise.pending) {
+            if (!(reason instanceof Error)) {
+                throw new TypeError('reject reason need typeof error')
+            }
+            this.state = MyPromise.rejected
+            this.value = reason
+            if (this.rejectedCallbacks.length) {
+                this.rejectedCallbacks.forEach(fn => fn(this.reason))
+            }
+        }
+    }
     then(onFulFilled, onRejected) {
         if (typeof onFulFilled !== 'function') {
             onFulFilled = value => value
@@ -66,6 +89,104 @@ class MyPromise {
             }
         })
         return p1
+    }
+    catch(onRejected) {
+        return this.then(null, onRejected)
+    }
+    finally(finalFn) {
+        return this.then(finalFn, finalFn)
+    }
+    static resolve(val) {
+        if (val instanceof MyPromise) return val
+        return new MyPromise(resolve => {
+            resolve(val)
+        })
+    }
+    static reject(error) {
+        if (error instanceof MyPromise) return error
+        return new MyPromise((resolve, reject) => {
+            reject(error)
+        })
+    }
+    static all(promiseList) {
+        return new MyPromise((resolve, reject) => {
+            if (Array.isArray(promiseList)) {
+                if (!promiseList.length) {
+                    return resolve(promiseList)
+                }
+                let count = 0
+                const result = []
+                const complete = () => {
+                    count === promiseList.length && resolve(result)
+                }
+                promiseList.forEach((item, index) => {
+                    if (!(item instanceof MyPromise)) {
+                        count++
+                        result.push(item)
+                        complete()
+                    } else {
+                        item.then(
+                            value => {
+                                count++
+                                result.push(value)
+                                complete()
+                            },
+                            error => {
+                                reject(error)
+                            }
+                        )
+                    }
+                })
+            } else {
+                reject(new Error('argument is not iterable'))
+            }
+        })
+    }
+    static allSettled(promiseList) {
+        if (Array.isArray(promiseList)) {
+            return new MyPromise((resolve, reject) => {
+                if (!promiseList.length) {
+                    return resolve(promiseList)
+                }
+                const result = []
+                let count = 0
+
+                const complete = () => {
+                    count === promiseList.length && resolve(result)
+                }
+
+                promiseList.forEach((item, index) => {
+                    count++
+                    if (item instanceof MyPromise) {
+                        item.then(val => {
+                            result.push({ status: 'fulfilled', value: val })
+                            complete()
+                        }).catch(e => {
+                            result.push({ status: 'rejected', reason: e })
+                            complete()
+                        })
+                    } else {
+                        result.push({ status: 'fulfilled', value: item })
+                        complete()
+                    }
+                })
+            })
+        } else {
+            return reject(new Error('argument is not iterable'))
+        }
+    }
+    static race(promiseList) {
+        return new myPromise((resolve, reject) => {
+            if (Array.isArray(promises)) {
+                if (promises.length > 0) {
+                    promises.forEach(item => {
+                        myPromise.resolve(item).then(resolve, reject)
+                    })
+                }
+            } else {
+                return reject(new TypeError('Argument is not iterable'))
+            }
+        })
     }
     resolvePromise(promise, value, resolve, reject) {
         // 1.如果不返回值，默认为undefined
@@ -119,37 +240,6 @@ class MyPromise {
             resolve(value)
         }
     }
-    resolve(value) {
-        if (this.state === MyPromise.pending) {
-            this.state = MyPromise.fulfilled
-            this.value = value
-            if (this.fulfilledCallbacks.length) {
-                this.fulfilledCallbacks.forEach(fn => {
-                    fn(this.value)
-                })
-            }
-        }
-    }
-    reject(reason) {
-        if (this.state === MyPromise.pending) {
-            if (!reason instanceof Error) {
-                reason = new TypeError('reject reason need typeof error')
-            }
-            this.state = MyPromise.rejected
-            this.value = reason
-            if (this.rejectedCallbacks.length) {
-                this.rejectedCallbacks.forEach(fn => fn(this.reason))
-            }
-        }
-    }
-}
-MyPromise.deferred = function () {
-    let result = {}
-    result.promise = new MyPromise((resolve, reject) => {
-        result.resolve = resolve
-        result.reject = reject
-    })
-    return result
 }
 
-module.exports = MyPromise
+// module.exports = MyPromise

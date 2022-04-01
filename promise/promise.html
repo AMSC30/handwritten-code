@@ -6,50 +6,54 @@
         <title>手写promise</title>
     </head>
 
-<<<<<<< HEAD
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>手写promise</title>
+    </head>
+
     <body>
         <script src="./promise_v3.js"></script>
         <script>
-            new MyPromise((resolve, reject) => {
+            const p1 = new MyPromise((resolve, reject) => {
                 setTimeout(() => {
-                    console.log(1)
-                    resolve(2)
+                    resolve(1111)
                 }, 1000)
             })
-                .then(val => {
-                    console.log(val)
-                    return 3
+
+            // Promise.prototype.then
+            // p1.then(res => console.log(res)).then(res => console.log(res))
+
+            // Promise.prototype.catch
+            // p1.catch(e => console.log(e.message))
+
+            // Promise.resolve
+            // MyPromise.resolve(444).then(res => console.log(res))
+
+            // Promise.reject
+            // MyPromise.reject(new Error('promise.reject')).catch(error => console.log(error.message))
+
+            // Promise.all
+            // const pAll = MyPromise.resolve(1)
+            // MyPromise.all([pAll, 2, '32'])
+            //     .then(res => {
+            //         console.log(res)
+            //     })
+            //     .catch(e => {
+            //         console.log(e.message)
+            //     })
+
+            // Promise.allSettled
+            const pAllSettled = MyPromise.resolve(1)
+            const pAllRejected = MyPromise.reject(new Error('error'))
+
+            MyPromise.allSettled([pAllSettled, pAllRejected, 2, '32'])
+                .then(res => {
+                    console.log(res)
                 })
-                .then(val => {
-                    console.log(val)
+                .catch(e => {
+                    console.log(e.message)
                 })
         </script>
     </body>
 </html>
-=======
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>手写promise</title>
-</head>
-
-<body>
-	<script src="./promise_v2.js"></script>
-	<script>
-
-
-		new myPromise((resolve, reject) =>
-		{
-
-			resolve(111)
-
-		}).then((res) =>
-		{
-			console.log(res)
-
-		})
-	</script>
-</body>
-
-</html>
->>>>>>> 83f4a23c7eebb0dfc866a22a603e2034dc694c4e
