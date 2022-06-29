@@ -4,4 +4,6 @@ const router = new Router({
     prefix: '/user'
 })
 router.get('/', User.allUser)
+router.post('/:id', User.userById)
+
 module.exports = router

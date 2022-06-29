@@ -68,6 +68,7 @@ module.exports = class Application extends Emitter {
     }
 
     use(fn) {
+        // use参数验证，支持非generator函数
         if (typeof fn !== 'function') throw new TypeError('middleware must be a function!')
         if (isGeneratorFunction(fn)) {
             deprecate(
@@ -77,10 +78,12 @@ module.exports = class Application extends Emitter {
             )
             fn = convert(fn)
         }
+        // 添加到中间件列表中
         this.middleware.push(fn)
         return this
     }
 
+    // 生成serve实例request事件的回调函数
     callback() {
         const fn = compose(this.middleware)
 
