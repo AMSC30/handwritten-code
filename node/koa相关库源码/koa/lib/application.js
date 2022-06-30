@@ -92,19 +92,15 @@ module.exports = class Application extends Emitter {
         const handleRequest = (req, res) => {
             // 根据req、res生成context
             const ctx = this.createContext(req, res)
-            return this.handleRequest(ctx, fn)
+            ctx.status = 404
+
+            const onerror = err => ctx.onerror(err)
+            const handleResponse = () => respond(ctx)
+
+            return fn(ctx).then(handleResponse).catch(onerror)
         }
 
         return handleRequest
-    }
-
-    handleRequest(ctx, fnMiddleware) {
-        const res = ctx.res
-        res.statusCode = 404
-        const onerror = err => ctx.onerror(err)
-        const handleResponse = () => respond(ctx)
-        onFinished(res, onerror)
-        return fnMiddleware(ctx).then(handleResponse).catch(onerror)
     }
 
     createContext(req, res) {
@@ -154,10 +150,7 @@ module.exports = class Application extends Emitter {
 }
 
 function respond(ctx) {
-    // allow bypassing koa
-    if (false === ctx.respond) return
-
-    if (!ctx.writable) return
+    if (false === ctx.respond || !ctx.writable) return
 
     const res = ctx.res
     let body = ctx.body

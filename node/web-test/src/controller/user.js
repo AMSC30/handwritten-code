@@ -32,7 +32,39 @@ exports.getUserInfo = (ctx, next) => {
             code: '403'
         }
     } else {
-        const info = jwt.verify(token, 'damkiuh34r09u323rbnavjaf9uerjfqefqqb09023h43ibcae9uoue5bin')
-        next()
+        try {
+            const info = jwt.verify(token, 'damkiuh34r09u323rbnavjaf9uerjfqefqqb09023h43ibcae9uoue5bin')
+            ctx.body = {
+                code: 200,
+                data: {
+                    name: 'zxx',
+                    age: 27,
+                    id: 1,
+                    permission: ['user', 'order']
+                },
+                message: 'success'
+            }
+        } catch (error) {
+            ctx.status = 200
+            ctx.body = {
+                code: 404,
+                data: null,
+                message: 'user not found'
+            }
+        }
+    }
+    next()
+}
+exports.loginVerify = async (ctx, next) => {
+    const token = ctx.request.get('token')
+    const url = ctx.request.url
+    if (!token && url !== '/user/login') {
+        ctx.body = {
+            code: 401,
+            data: null,
+            message: 'token is empty'
+        }
+    } else {
+        return await next()
     }
 }
