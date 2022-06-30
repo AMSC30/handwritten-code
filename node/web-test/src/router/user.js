@@ -5,5 +5,7 @@ const router = new Router({
 })
 router.get('/', User.allUser)
 router.post('/:id', User.userById)
+router.post('/login', User.login)
+router.post('/info', User.getUserInfo)
 
 module.exports = router
