@@ -89,7 +89,7 @@ module.exports = class Application extends Emitter {
 
         if (!this.listenerCount('error')) this.on('error', this.onerror)
 
-        const handleRequest = (req, res) => {
+        return (req, res) => {
             // 根据req、res生成context
             const ctx = this.createContext(req, res)
             ctx.status = 404
@@ -99,8 +99,6 @@ module.exports = class Application extends Emitter {
 
             return fn(ctx).then(handleResponse).catch(onerror)
         }
-
-        return handleRequest
     }
 
     createContext(req, res) {
